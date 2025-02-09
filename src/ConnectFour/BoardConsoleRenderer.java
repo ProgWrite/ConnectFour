@@ -3,11 +3,23 @@ package ConnectFour;
 public class BoardConsoleRenderer {
 
     public void render(Board board) {
+        // Сначала печатаем номера столбцов
+        StringBuilder header = new StringBuilder("   "); // Отступ для номера строки
+        for (int column = 0; column < board.getWidth(); column++) {
+            header.append("").append(column).append("    ");
+        }
+        System.out.println(header);
 
-        for (int row = 0; row < board.getWidth() ; row++) {
+        for (int row = 0; row < board.getHeight(); row++) {
             StringBuilder line = new StringBuilder();
-            for (int columh = 0; columh < board.getHeight() ; columh++) {
-                line.append(renderEmptyCell());
+            line.append(row).append(""); // Печатаем номер строки и разделитель
+            for (int column = 0; column < board.getWidth(); column++) {
+                Coordinates coordinates = new Coordinates(row, column);
+                if (board.isCellEmpty(coordinates)) {
+                    line.append(renderEmptyCell());
+                } else {
+                    line.append(getCircleSquare(board.getCircle(coordinates)));
+                }
             }
             System.out.println(line);
         }
@@ -17,7 +29,7 @@ public class BoardConsoleRenderer {
         return ("  .  ");
     }
 
-    private String selectPuctureForCircle(Circle circle) {
+    private String selectPictureForCircle(Circle circle) {
         switch (circle.getClass().getSimpleName()) {
             case "RedCircle":
                 return "\uD83D\uDD34";
@@ -29,6 +41,6 @@ public class BoardConsoleRenderer {
     }
 
     private String getCircleSquare(Circle circle) {
-         return(" " + selectPuctureForCircle(circle) + " ");
+         return(" " + selectPictureForCircle(circle) + " ");
     }
 }

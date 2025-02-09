@@ -29,4 +29,8 @@ public class Board {
         return circles.get(coordinates);
     }
 
+    public boolean isCellEmpty(Coordinates coordinates) {
+        return !circles.containsKey(coordinates);
+    }
+
 }
