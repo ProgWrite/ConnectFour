@@ -5,12 +5,12 @@ import java.util.Map;
 
 public class Board {
     private final Map<Coordinates, Circle> circles = new HashMap<>();
-    private final int width;
     private final int height;
+    private final int width;
 
-    public Board(int width, int height) {
-        this.width = width;
+    public Board(int height, int width) {
         this.height = height;
+        this.width = width;
     }
 
     public int getWidth() {
