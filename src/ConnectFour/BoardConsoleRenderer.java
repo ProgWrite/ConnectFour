@@ -3,16 +3,16 @@ package ConnectFour;
 public class BoardConsoleRenderer {
 
     public void render(Board board) {
-        // Сначала печатаем номера столбцов
-        StringBuilder header = new StringBuilder("   "); // Отступ для номера строки
+
+        StringBuilder header = new StringBuilder("   ");
         for (int column = 0; column < board.getWidth(); column++) {
-            header.append("").append(column).append("    ");
+            header.append(column).append("    ");
         }
         System.out.println(header);
 
         for (int row = 0; row < board.getHeight(); row++) {
             StringBuilder line = new StringBuilder();
-            line.append(row).append(""); // Печатаем номер строки и разделитель
+            line.append(row);
             for (int column = 0; column < board.getWidth(); column++) {
                 Coordinates coordinates = new Coordinates(row, column);
                 if (board.isCellEmpty(coordinates)) {
@@ -41,6 +41,9 @@ public class BoardConsoleRenderer {
     }
 
     private String getCircleSquare(Circle circle) {
-         return(" " + selectPictureForCircle(circle) + " ");
+         return(" " + selectPictureForCircle(circle) + "  ");
     }
+
+
+
 }

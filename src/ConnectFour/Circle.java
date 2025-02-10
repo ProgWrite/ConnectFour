@@ -2,10 +2,12 @@ package ConnectFour;
 
 abstract public class Circle {
     public final Color color;
-    public Coordinates coordinates;
 
-    public Circle(Color color, Coordinates coordinates) {
+    public Circle(Color color) {
         this.color = color;
-        this.coordinates = coordinates;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }

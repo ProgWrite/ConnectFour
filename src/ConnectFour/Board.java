@@ -13,6 +13,8 @@ public class Board {
         this.width = width;
     }
 
+
+
     public int getWidth() {
         return width;
     }
@@ -28,6 +30,7 @@ public class Board {
     public Circle getCircle(Coordinates coordinates) {
         return circles.get(coordinates);
     }
+
 
     public boolean isCellEmpty(Coordinates coordinates) {
         return !circles.containsKey(coordinates);
