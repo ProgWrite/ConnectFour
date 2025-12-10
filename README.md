@@ -8,24 +8,24 @@
 
 ```mermaid
 graph TD
-    Start[Start] --> GenerateSignature[Generate CMS signature PKCS7 DER]
-    GenerateSignature --> BuildMessage[Build Message with FromBoxId ToBoxId Entities SignedContent]
-    BuildMessage --> PostMessage[Send document via postMessage]
+    Start[Начало] --> GenerateSignature[Формирование CMS подписи PKCS7 DER]
+    GenerateSignature --> BuildMessage[Формирование Message с FromBoxId ToBoxId Entities SignedContent]
+    BuildMessage --> PostMessage[Отправка документа через postMessage]
 
-    PostMessage --> DiadocUI[Document available in Diadoc UI]
-    DiadocUI --> UserAction{Counterparty action}
+    PostMessage --> DiadocUI[Документ доступен в интерфейсе Диадок]
+    DiadocUI --> UserAction{Действие контрагента}
 
-    UserAction -->|Sign| Scheduler[Run scheduler task]
-    UserAction -->|Reject| Scheduler
+    UserAction -->|Подписать| Scheduler[Запуск планировщика]
+    UserAction -->|Отклонить| Scheduler
 
-    Scheduler --> GetEvents[Call GetPartnerEvents with LastCursor]
-    GetEvents --> EventsResponse[Receive PartnerEventsResponse]
+    Scheduler --> GetEvents[Вызов GetPartnerEvents с LastCursor]
+    GetEvents --> EventsResponse[Получение PartnerEventsResponse]
 
-    EventsResponse --> DocWithFlow[Read DocumentWithDocflowV4]
-    DocWithFlow --> Docflow[Read DocflowV4]
-    Docflow --> RecipientResponse[Read ParticipantResponse]
+    EventsResponse --> DocWithFlow[Чтение DocumentWithDocflowV4]
+    DocWithFlow --> Docflow[Чтение DocflowV4]
+    Docflow --> RecipientResponse[Чтение ParticipantResponse]
 
-    RecipientResponse --> StatusCheck{Document status}
-    StatusCheck -->|Signed| Signed[Mark document as signed]
-    StatusCheck -->|Rejected| Rejected[Mark document as rejected]
+    RecipientResponse --> StatusCheck{Статус документа}
+    StatusCheck -->|Подписан| Signed[Пометить документ как подписанный]
+    StatusCheck -->|Отклонён| Rejected[Пометить документ как отклонённый]
 ```
