@@ -8,24 +8,24 @@
 
 ```mermaid
 graph TD
-    Start[Начало процесса] --> GenerateSignature[Формирование CMS-подписи (PKCS#7, DER)]
-    GenerateSignature --> BuildMessage[Формирование Message (FromBoxId, ToBoxId, Entities, SignedContent)]
-    BuildMessage --> PostMessage[Отправка документа через postMessage]
+    Start[Start] --> GenerateSignature[Generate CMS signature PKCS7 DER]
+    GenerateSignature --> BuildMessage[Build Message with FromBoxId ToBoxId Entities SignedContent]
+    BuildMessage --> PostMessage[Send document via postMessage]
 
-    PostMessage --> DiadocUI[Документ доступен контрагенту в интерфейсе Диадока]
-    DiadocUI --> UserAction{Контрагент: подписать или отклонить?}
+    PostMessage --> DiadocUI[Document available in Diadoc UI]
+    DiadocUI --> UserAction{Counterparty action}
 
-    UserAction -->|Подписал| Scheduler[Фоновый планировщик @Scheduled]
-    UserAction -->|Отклонил| Scheduler
+    UserAction -->|Sign| Scheduler[Run scheduler task]
+    UserAction -->|Reject| Scheduler
 
-    Scheduler --> GetEvents[Вызов GetPartnerEvents (с учетом LastCursor)]
-    GetEvents --> EventsResponse[GetPartnerEventsResponse]
+    Scheduler --> GetEvents[Call GetPartnerEvents with LastCursor]
+    GetEvents --> EventsResponse[Receive PartnerEventsResponse]
 
-    EventsResponse --> DocWithFlow[Получение DocumentWithDocflowV4]
-    DocWithFlow --> Docflow[Чтение DocflowV4]
-    Docflow --> RecipientResponse[Чтение RecipientResponse (ParticipantResponseDocflowV4)]
+    EventsResponse --> DocWithFlow[Read DocumentWithDocflowV4]
+    DocWithFlow --> Docflow[Read DocflowV4]
+    Docflow --> RecipientResponse[Read ParticipantResponse]
 
-    RecipientResponse --> StatusCheck{Статус документа?}
-    StatusCheck -->|Подписан| Signed[Обновить статус: Документ подписан]
-    StatusCheck -->|Отклонён| Rejected[Обновить статус: Документ отклонён]
+    RecipientResponse --> StatusCheck{Document status}
+    StatusCheck -->|Signed| Signed[Mark document as signed]
+    StatusCheck -->|Rejected| Rejected[Mark document as rejected]
 ```
