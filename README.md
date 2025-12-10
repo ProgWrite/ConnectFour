@@ -8,13 +8,24 @@
 
 ```mermaid
 graph TD
-  A[Комплектование] --> B[Фрезерная обработка]
-  B --> C[Слесарная обработка]
-  C --> D[Токарная обработка]
-  D --> E[Очистка]
-  E --> F[Окрашивание]
-  F --> G[Взвешивание]
-  G --> H{Вес в норме?}
-  H -- Да --> I[Маркирование]
-  H -- Нет --> E[Повторная очистка и корректировка]
+    Start[Начало процесса] --> GenerateSignature[Формирование CMS-подписи (PKCS#7, DER)]
+    GenerateSignature --> BuildMessage[Формирование Message (FromBoxId, ToBoxId, Entities, SignedContent)]
+    BuildMessage --> PostMessage[Отправка документа через postMessage]
+
+    PostMessage --> DiadocUI[Документ доступен контрагенту в интерфейсе Диадока]
+    DiadocUI --> UserAction{Контрагент: подписать или отклонить?}
+
+    UserAction -->|Подписал| Scheduler[Фоновый планировщик @Scheduled]
+    UserAction -->|Отклонил| Scheduler
+
+    Scheduler --> GetEvents[Вызов GetPartnerEvents (с учетом LastCursor)]
+    GetEvents --> EventsResponse[GetPartnerEventsResponse]
+
+    EventsResponse --> DocWithFlow[Получение DocumentWithDocflowV4]
+    DocWithFlow --> Docflow[Чтение DocflowV4]
+    Docflow --> RecipientResponse[Чтение RecipientResponse (ParticipantResponseDocflowV4)]
+
+    RecipientResponse --> StatusCheck{Статус документа?}
+    StatusCheck -->|Подписан| Signed[Обновить статус: Документ подписан]
+    StatusCheck -->|Отклонён| Rejected[Обновить статус: Документ отклонён]
 ```
