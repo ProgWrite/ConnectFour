@@ -7,6 +7,7 @@
 - Все клетки доски заняты и ни один игрок, не выполняет предыдущее условие победы. В этом случае игра заканчивается ничьёй.
 
 ```mermaid
+
 graph TD
     Start[Начало] --> GenerateSignature[Формирование CMS подписи PKCS7 DER]
     GenerateSignature --> BuildMessage[Формирование Message с FromBoxId ToBoxId Entities SignedContent]
@@ -28,4 +29,8 @@ graph TD
     RecipientResponse --> StatusCheck{Статус документа}
     StatusCheck -->|Подписан| Signed[Пометить документ как подписанный]
     StatusCheck -->|Отклонён| Rejected[Пометить документ как отклонённый]
+
+    %% Стили
+    classDef base fill:#ffd6e7,stroke:#5bbcff,stroke-width:2px,color:#4a4a4a;
+    class Start,GenerateSignature,BuildMessage,PostMessage,DiadocUI,UserAction,Scheduler,GetEvents,EventsResponse,DocWithFlow,Docflow,RecipientResponse,StatusCheck,Signed,Rejected base
 ```
